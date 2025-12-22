@@ -1,4 +1,4 @@
-// theme management
+//* theme management
 function toggleTheme() {
   const currentTheme =
     document.documentElement.getAttribute('data-theme');
@@ -9,7 +9,7 @@ function toggleTheme() {
   const icon = document.getElementById('theme-icon');
   icon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
 
-  // If you are not using the form web component you can comment this out
+  // if not using the form web component, can comment this out
   const contactForm = document.getElementById('contact-form');
   if (contactForm) {
     contactForm.setAttribute('theme', newTheme);
@@ -33,14 +33,14 @@ function initializeTheme() {
       savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
   }
 
-  // If you are not using the form web component from DevManSam777 you can comment this out
+  // if not using the form web component from DevManSam777, can comment this out
   const contactForm = document.getElementById('contact-form');
   if (contactForm) {
     contactForm.setAttribute('theme', savedTheme);
   }
 }
 
-// smooth scrolling
+//* smooth scrolling
 function initializeSmoothScrolling() {
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     anchor.addEventListener('click', function (e) {
@@ -64,7 +64,7 @@ function initializeSmoothScrolling() {
   });
 }
 
-// mobile menu functionality
+//* mobile menu functionality
 function initializeMobileMenu() {
   const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
   const navLinks = document.querySelector('.nav-links');
@@ -141,7 +141,7 @@ function closeMobileMenu() {
   }
 }
 
-//   BLOG FUNCTIONALITY (OPTIONAL)
+//* BLOG FUNCTIONALITY (OPTIONAL)
 
 //  Uncomment the functions below if you want to use the blog feature.
 //  This will fetch blog posts from Hashnode and display them on your site.
@@ -280,7 +280,7 @@ function initializeBlogCards() {
 }
 */
 
-// form event handlers
+//* form event handlers
 function initializeFormEventHandlers() {
   document.addEventListener('form-submit', (event) => {
     // Handle form submission if needed
@@ -295,7 +295,7 @@ function initializeFormEventHandlers() {
   });
 }
 
-// header scroll effect
+//* header scroll effect
 function initializeHeaderScrollEffect() {
   const header = document.querySelector('.header');
   let lastScrollY = window.scrollY;
@@ -316,7 +316,7 @@ function initializeHeaderScrollEffect() {
   });
 }
 
-// scroll animations
+//* scroll animations
 function initializeScrollAnimations() {
   const observerOptions = {
     threshold: 0.1,
@@ -373,7 +373,7 @@ function handleWindowResize() {
   });
 }
 
-// initialize everything
+//* initialize everything
 document.addEventListener('DOMContentLoaded', () => {
   initializeTheme();
   initializeSmoothScrolling();
@@ -394,6 +394,12 @@ document.addEventListener('DOMContentLoaded', () => {
     new Date().getFullYear();
 
   console.log('Portfolio site initialized successfully!');
+  // initialize GitHub stats widget (defaults can be overridden)
+  try {
+    initGitHubStatsWidget && initGitHubStatsWidget();
+  } catch (e) {
+    // ignore if widget not present or failed
+  }
 });
 
 document.addEventListener('visibilitychange', () => {
@@ -403,3 +409,143 @@ document.addEventListener('visibilitychange', () => {
     // Page is visible
   }
 });
+
+// Vanilla GitHub stats widget converted from GitHubStatsWidget.tsx
+async function fetchGitHubStats(username) {
+  const ninetyDaysAgo = new Date();
+  ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
+
+  const headers = { Accept: 'application/vnd.github.v3+json' };
+  const token =
+    window.GITHUB_TOKEN ||
+    document.querySelector('meta[name="github-token"]')?.content;
+  if (token) headers.Authorization = `token ${token}`;
+
+  const response = await fetch(
+    `https://api.github.com/users/${username}/events`,
+    { headers }
+  );
+  if (!response.ok) {
+    throw new Error(
+      `Error fetching data: ${response.status} ${response.statusText}`
+    );
+  }
+
+  const events = await response.json();
+  if (!Array.isArray(events)) {
+    throw new Error('Unexpected response from GitHub API');
+  }
+
+  const statsCalc = {
+    commits: 0,
+    prs: 0,
+    mergedPrs: 0,
+    reviewedPrs: 0,
+    issues: 0,
+    comments: 0,
+    branches: 0,
+  };
+
+  events.forEach((event) => {
+    const createdAt = event.created_at
+      ? new Date(event.created_at)
+      : null;
+    if (createdAt && createdAt < ninetyDaysAgo) return; // only last 90 days
+
+    if (event.type === 'PushEvent') {
+      statsCalc.commits +=
+        (event.payload &&
+          event.payload.commits &&
+          event.payload.commits.length) ||
+        0;
+    } else if (event.type === 'PullRequestEvent') {
+      statsCalc.prs += 1;
+      if (
+        event.payload &&
+        event.payload.action === 'closed' &&
+        event.payload.pull_request &&
+        event.payload.pull_request.merged
+      ) {
+        statsCalc.mergedPrs += 1;
+      }
+    } else if (event.type === 'PullRequestReviewEvent') {
+      if (event.payload && event.payload.action === 'submitted') {
+        statsCalc.reviewedPrs += 1;
+      }
+    } else if (event.type === 'IssuesEvent') {
+      statsCalc.issues += 1;
+    } else if (event.type === 'IssueCommentEvent') {
+      statsCalc.comments += 1;
+    } else if (
+      event.type === 'CreateEvent' &&
+      event.payload &&
+      event.payload.ref_type === 'branch'
+    ) {
+      statsCalc.branches += 1;
+    }
+  });
+
+  return statsCalc;
+}
+
+function renderGitHubStats(container, stats) {
+  container.classList.add('github-stats-widget');
+
+  const parts = [];
+  if (stats.commits > 0)
+    parts.push(`pushed <strong>${stats.commits} commits</strong>`);
+  if (stats.prs > 0)
+    parts.push(`opened <strong>${stats.prs} PRs</strong>`);
+  if (stats.mergedPrs > 0)
+    parts.push(`merged <strong>${stats.mergedPrs} PRs</strong>`);
+  if (stats.reviewedPrs > 0)
+    parts.push(`reviewed <strong>${stats.reviewedPrs} PRs</strong>`);
+  if (stats.comments > 0)
+    parts.push(`made <strong>${stats.comments} comments</strong>`);
+  if (stats.branches > 0)
+    parts.push(`created <strong>${stats.branches} branches</strong>`);
+
+  const sentence = parts.length
+    ? parts.join(', ').replace(/, ([^,]*)$/, ' and $1')
+    : 'had no public activity';
+
+  container.innerHTML = `
+    <div class="github-stats-card">
+      <p>In the last 90 days on GitHub I ${sentence} in public repositories.</p>
+    </div>
+  `;
+}
+
+function renderGitHubStatsError(container, error) {
+  container.classList.add('github-stats-error');
+  container.innerHTML = `<div>Failed to fetch GitHub stats: ${String(
+    error
+  )}</div>`;
+}
+
+function initGitHubStatsWidget(options) {
+  const opts = options || {};
+  const username = opts.username || 'DrAcula27';
+  const containerId = opts.containerId || 'github-stats';
+
+  let container = document.getElementById(containerId);
+  if (!container) {
+    container = document.createElement('div');
+    container.id = containerId;
+    const anchor =
+      document.querySelector('main') ||
+      document.querySelector('.content') ||
+      document.body;
+    anchor.appendChild(container);
+  }
+
+  container.innerHTML =
+    '<div class="github-stats-loading">Loading GitHub stats…</div>';
+
+  fetchGitHubStats(username)
+    .then((stats) => renderGitHubStats(container, stats))
+    .catch((err) => {
+      console.error('GitHub stats error', err);
+      renderGitHubStatsError(container, err);
+    });
+}
