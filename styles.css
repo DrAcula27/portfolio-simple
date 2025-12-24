@@ -214,7 +214,7 @@ html {
   margin-bottom: 2rem;
 }
 
-.hero-gh-stats {
+/* .hero-gh-stats {
   width: 300px;
   height: 300px;
   background: linear-gradient(
@@ -229,6 +229,64 @@ html {
   margin: 0 auto;
   color: white;
   font-size: 4rem;
+} */
+
+/* GitHub stats widget styles */
+.github-stats-widget {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  text-align: center;
+  color: var(--text-dark);
+}
+
+.github-stats-card {
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--accent-color)
+  );
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  max-width: 700px;
+  width: 100%;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(6px);
+}
+
+.github-stats-card p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: var(--text-dark);
+}
+
+.github-stats-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  color: var(--text-light);
+  font-weight: 600;
+}
+
+.github-stats-error {
+  background: rgba(255, 69, 58, 0.06);
+  color: #ef4444;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .github-stats-card {
+    max-width: 260px;
+    padding: 0.75rem 1rem;
+  }
 }
 
 .cta-buttons {
@@ -857,6 +915,11 @@ section {
 
   .mobile-menu-btn {
     display: block;
+  }
+
+  .hero-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
   }
 
   .hero-content h1 {
