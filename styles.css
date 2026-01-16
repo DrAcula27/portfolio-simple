@@ -769,9 +769,17 @@ section {
 }
 
 .contact-form-container web-inquiry-form,
-.contact-form-container contact-form {
+.contact-form-container contact-form,
+.contact-form-container form {
   width: 100%;
   margin: 0;
+}
+
+.contact-form-container form {
+  background: var(--bg-white);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
 }
 
 .footer {
