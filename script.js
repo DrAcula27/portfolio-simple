@@ -46,7 +46,7 @@ function initializeSmoothScrolling() {
     anchor.addEventListener('click', function (e) {
       e.preventDefault();
       const target = document.querySelector(
-        this.getAttribute('href')
+        this.getAttribute('href'),
       );
       if (target) {
         const headerHeight =
@@ -343,7 +343,7 @@ function initializeScrollAnimations() {
 
 function initializeSystemThemeListener() {
   const mediaQuery = window.matchMedia(
-    '(prefers-color-scheme: dark)'
+    '(prefers-color-scheme: dark)',
   );
 
   mediaQuery.addListener((e) => {
@@ -410,7 +410,7 @@ document.addEventListener('visibilitychange', () => {
   }
 });
 
-// Vanilla GitHub stats widget converted from GitHubStatsWidget.tsx
+//* GitHub stats widget
 async function fetchGitHubStats(username) {
   const ninetyDaysAgo = new Date();
   ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
@@ -423,11 +423,11 @@ async function fetchGitHubStats(username) {
 
   const response = await fetch(
     `https://api.github.com/users/${username}/events`,
-    { headers }
+    { headers },
   );
   if (!response.ok) {
     throw new Error(
-      `Error fetching data: ${response.status} ${response.statusText}`
+      `Error fetching data: ${response.status} ${response.statusText}`,
     );
   }
 
@@ -454,10 +454,11 @@ async function fetchGitHubStats(username) {
 
     if (event.type === 'PushEvent') {
       statsCalc.commits +=
+        (event.payload && event.payload.size) ||
         (event.payload &&
           event.payload.commits &&
           event.payload.commits.length) ||
-        0;
+        1; // fallback to 1 commit per push
     } else if (event.type === 'PullRequestEvent') {
       statsCalc.prs += 1;
       if (
@@ -505,21 +506,27 @@ function renderGitHubStats(container, stats) {
   if (stats.branches > 0)
     parts.push(`created <strong>${stats.branches} branches</strong>`);
 
-  const sentence = parts.length
-    ? parts.join(', ').replace(/, ([^,]*)$/, ' and $1')
-    : 'had no public activity';
+  if (parts.length === 0) {
+    // Show logo.png instead of the widget if no activity
+    container.innerHTML =
+      '<img src="assets/logo.png" alt="Logo" style="max-width: 100%; height: auto;" />';
+  } else {
+    const sentence = parts
+      .join(', ')
+      .replace(/, ([^,]*)$/, ' and $1');
 
-  container.innerHTML = `
-    <div class="github-stats-card">
-      <p>In the last 90 days on GitHub I ${sentence} in public repositories.</p>
-    </div>
-  `;
+    container.innerHTML = `
+      <div class="github-stats-card">
+        <p>In the last 90 days on GitHub I ${sentence} in public repositories.</p>
+      </div>
+    `;
+  }
 }
 
 function renderGitHubStatsError(container, error) {
   container.classList.add('github-stats-error');
   container.innerHTML = `<div>Failed to fetch GitHub stats: ${String(
-    error
+    error,
   )}</div>`;
 }
 
