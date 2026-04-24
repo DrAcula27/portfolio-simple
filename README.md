@@ -1,7 +1,7 @@
 # Danielle Andrews - Developer Portfolio
 
-![Portfolio Hero - Light Mode](./assets/imagesForREADME/hero_light.png)
 ![Portfolio Hero - Dark Mode](./assets/imagesForREADME/hero_dark.png)
+![Portfolio Hero - Light Mode](./assets/imagesForREADME/hero_light.png)
 
 A clean, modern developer portfolio with light and dark theme support that showcases my skills, projects, and experience as a software developer.
 
@@ -25,7 +25,6 @@ portfolio_template/
 ├── styles.css          # All styling and themes
 ├── script.js           # JavaScript functionality
 ├── assets/             # Images and icons
-│   └── code_icon.png
 └── README.md           # This file
 ```
 
@@ -47,17 +46,21 @@ Feel free to clone this project and make it your own! If you find bugs or have s
 - Web components by [DevManSam777](https://github.com/DevManSam777)
 - Template based on DevManSam777's [portfolio_template](https://github.com/DevManSam777/portfolio_template)
 
-![Hero Section - Light Mode](./assets/imagesForREADME/hero_light.png)
+## Screenshots
+
 ![Hero Section - Dark Mode](./assets/imagesForREADME/hero_dark.png)
-![About Section - Light Mode](./assets/imagesForREADME/about_light.png)
+![Hero Section - Light Mode](./assets/imagesForREADME/hero_light.png)
 ![About Section - Dark Mode](./assets/imagesForREADME/about_dark.png)
+![About Section - Light Mode](./assets/imagesForREADME/about_light.png)
+![Skills Section - Dark Mode](./assets/imagesForREADME/skills_dark.png)
 ![Skills Section - Light Mode](./assets/imagesForREADME/skills_light.png)
-![Projects Section - Light Mode](./assets/imagesForREADME/projects_light.png)
 ![Projects Section - Dark Mode](./assets/imagesForREADME/projects_dark.png)
-![Minimalist Contact Form - Light Mode](./assets/imagesForREADME/light_contact_form.png)
-![Minimalist Contact Form - Dark Mode](./assets/imagesForREADME/dark_contact_form.png)
-![Web Inquiry Form - Light Mode](./assets/imagesForREADME/light_web_inquiry_form.png)
-![Web Inquiry Form - Dark Mode](./assets/imagesForREADME/dark_web_inquiry_form.png)
+![Projects Section - Light Mode](./assets/imagesForREADME/projects_light.png)
+![Contact Form - Dark Mode](./assets/imagesForREADME/contact_form_dark.png)
+![Contact Form - Light Mode](./assets/imagesForREADME/contact_form_light.png)
+<!-- ![Web Inquiry Form - Dark Mode](./assets/imagesForREADME/web_inquiry_form_dark.png) -->
+<!-- ![Web Inquiry Form - Light Mode](./assets/imagesForREADME/web_inquiry_form_light.png) -->
 ![Footer Section - Dark Mode](./assets/imagesForREADME/footer_dark.png)
+![Footer Section - Light Mode](./assets/imagesForREADME/footer_light.png)
 
 Copyright (c) 2026 DrAcula27
