@@ -280,8 +280,66 @@ function initializeBlogCards() {
 }
 */
 
+//* Email.js Configuration
+function initializeEmailJs() {
+  const PUBLIC_KEY = 'z__ElFnGhyPSjoo-R';
+
+  if (typeof emailjs === 'undefined') {
+    console.error(
+      'EmailJS SDK not loaded. Make sure the EmailJS script is included before script.js.',
+    );
+    return;
+  }
+
+  emailjs.init(PUBLIC_KEY);
+}
+
 //* form event handlers
 function initializeFormEventHandlers() {
+  const form = document.querySelector('form[name="emailForm"]');
+
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = 'Sending...';
+      submitBtn.disabled = true;
+
+      try {
+        await emailjs.sendForm(
+          'service_pl85kwq',
+          'template_xydoxzs',
+          form,
+        );
+
+        // Success message
+        submitBtn.textContent = 'Message Sent! ✓';
+        submitBtn.style.backgroundColor = '#4caf50';
+        form.reset();
+
+        // Reset button after 3 seconds
+        setTimeout(() => {
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
+          submitBtn.style.backgroundColor = '';
+        }, 3000);
+      } catch (error) {
+        console.error('Email send failed:', error);
+        submitBtn.textContent = 'Send Failed - Try Again';
+        submitBtn.style.backgroundColor = '#f44336';
+
+        // Reset button after 3 seconds
+        setTimeout(() => {
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
+          submitBtn.style.backgroundColor = '';
+        }, 3000);
+      }
+    });
+  }
+
   document.addEventListener('form-submit', (event) => {
     // Handle form submission if needed
   });
@@ -375,6 +433,7 @@ function handleWindowResize() {
 
 //* initialize everything
 document.addEventListener('DOMContentLoaded', () => {
+  initializeEmailJs();
   initializeTheme();
   initializeSmoothScrolling();
   initializeFormEventHandlers();

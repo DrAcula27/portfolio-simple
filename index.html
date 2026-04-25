@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -53,7 +53,6 @@
       property="og:description"
       content="Full-stack software engineer specializing in the MERN stack. Creating user-friendly web solutions and efficient applications."
     />
-    <!-- TODO: Create a social media card image (1200x630px) and update the path -->
     <meta
       property="og:image"
       content="https://danielle-andrews.devdecks.com/assets/social-media-card.jpg"
@@ -147,15 +146,22 @@
 
     <!-- Scripts -->
     <!-- Optional: Short Contact Form - comment out to remove-->
-    <script
+    <!-- <script
       src="https://cdn.jsdelivr.net/gh/DevManSam777/forms@latest/contact-form.js"
       defer
-    ></script>
+    ></script> -->
 
     <!--Optional: Full Web Inquiry Form -uncomment to-->
     <!-- <script
         src="https://cdn.jsdelivr.net/gh/DevManSam777/forms@latest/web-inquiry-form.js" defer
     ></script> -->
+
+    <!-- Email.js - for contact form -->
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
+      defer
+    ></script>
 
     <!-- Optional: Back to Top Button - comment out to remove -->
     <script
@@ -634,8 +640,39 @@
           You can customize the form colors and styling with the attributes below.  Full instructions and a list of available custom attributes can be found here: https://github.com/devmansam777/forms
         -->
         <div class="contact-form-container">
+          <form name="emailForm">
+            <label for="name">Name:</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              required
+              placeholder="Your Name"
+            />
+
+            <label for="email">Email:</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              placeholder="Your Email"
+            />
+
+            <label for="message">Message:</label>
+            <textarea
+              id="message"
+              name="message"
+              required
+              placeholder="Your Message"
+            ></textarea>
+
+            <button type="submit" class="btn btn-primary">
+              Send Message
+            </button>
+          </form>
           <!--Comment this out and it's script import in the head section and uncomment the full web inquiry form and its script import in head section to use that instead-->
-          <contact-form
+          <!-- <contact-form
             endpoint="https://www.your-api-endpoint-url-goes-here"
             primary-color="#e17688"
             background-color="rgba(255, 255, 255, 0.1)"
@@ -656,7 +693,7 @@
             dark-input-border-color="rgba(57, 65, 75, 0.5)"
             heading="Contact Form"
             success-message="Thank you! We'll get back to you soon!"
-          ></contact-form>
+          ></contact-form> -->
 
           <!-- Uncomment the web-inquiry-form to use that instead of short form as well as script import for it in head section-->
           <!-- <web-inquiry-form
